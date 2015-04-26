@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script src=/socket.io/socket.io.js></script>
+<title>buses Velocity</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+<div id="wrap">
+  <div id="masthead">
+    <h1>Buses Velicity</h1>
+  </div>
+  <div id="container">
+    <div id="menu">
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="/abc.html">ABC Buses</a></li>
+        <li><a href="#">Tiket</a></li>
+        <li><a href="/pago.html">Pago</a></li>
+        <li><a href="/factura.html">Consulta</a></li>
+        <li><a href="/manual.html">Repositorio</a></li>
+      </ul>
+    </div>
+
+    <div id="content">
+    </div>
+    <CENTER>
+		<table>
+		<tr>
+		<td>Ingresa su DPI: </td>
+		<td><input id="dpi" autocomplete="off" /></td>
+		<td></td>
+		</tr>
+		<tr>
+		<td>Ingresa el ID del Intinerario:</td>
+		<td><input id="int" autocomplete="off" /></td>
+		<td></td>
+		</tr>
+		<tr>
+		<td>Ingresa el ID de los puntos separados por coma (,):</td>
+		<td><input id="punt" autocomplete="off" /></td>
+		<td><input id="clickMe" type="button" value="Reservar" onclick="myFunction();" /></td>
+		</tr>
+		</table>
+    </CENTER>
+          <script>
+          //Variable tipo socket
+				var socket = io('http://localhost:3000');
+				//funcion socket en 'visits'
+				socket.on('visits', function(visitas){
+				var d = new Date(visitas.FECHA);
+				document.getElementById('content').innerHTML = document.getElementById('content').innerHTML+"INTI.: "+visitas.INTINERARIO+"  /#BUS: "+visitas.BUS+"  /ORG.:"+visitas.ORIGEN+"  /DEST.:"+visitas.DESTINO+"  /FECHA SAL.:"+d.toDateString()+"  /H_S.:"+visitas.H_SALIDA+"  /H_E.:"+visitas.H_LLEGADA+"<br>"+"ID PUNTO: "+visitas.VIAJE+" LUGAR INICIO: "+visitas.INICIO+"LUGAR FINAL: "+visitas.FIN+"<br><br>";
+				});
+				//funcion socket en tiket
+				socket.on('tiket', function(tik){
+				alert("Tiket num.: " +tik+ " generado, imprimiendo....")	;			
+				});
+				//Accion del boton
+				function myFunction() {
+				var x = document.getElementById('dpi').value;
+				var x1 = document.getElementById('int').value;
+				var x2 = document.getElementById('punt').value;
+				socket.emit('guardar1',x,x1,x2);
+			 	document.getElementById('dpi').value="";
+				document.getElementById('int').value="";
+				document.getElementById('punt').value="";
+				}	
+				</script>
+  </div>
+</div>
+<div id="footer">  Design by <a href="#"> Jordy Gonzalez 2015</a><br/>
+  This work is licensed under a <a href="#">Buses Velicity</a> </div>
+</body>
+</html>

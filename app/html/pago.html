@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script src=/socket.io/socket.io.js></script>
+<title>buses Velocity</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+<div id="wrap">
+  <div id="masthead">
+    <h1>Buses Velicity</h1>
+  </div>
+  <div id="container">
+    <div id="menu">
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="/abc.html">ABC Buses</a></li>
+        <li><a href="/index.html">Tiket</a></li>
+        <li><a href="#">Pago</a></li>
+        <li><a href="/factura.html">Consulta</a></li>
+        <li><a href="/manual.html">Repositorio</a></li>
+      </ul>
+    </div>
+    <div id="content">
+    </div>
+    </br>
+	</br>
+	</br>
+    <CENTER>
+    <form name="frm" action="#">
+		<table>
+		<tr>
+		<td>Ingresa el numero de tiket:</td>
+		<td><input type="text" autocomplete="off" id="tik" required></td>
+		<td><input id="bt1" type="submit" value="Buscar" onclick="buscar();" /></td>
+		</tr>
+		<tr>
+		<td>Total de kilometros:</td>
+		<td><input id="kilo" autocomplete="off" disabled/></td>
+		<td></td>
+		</tr>
+		<tr>
+		<td>Total a pagar:</td>
+		<td><input id="pago" autocomplete="off" disabled/></td>
+		<td><input id="bt2" type="button" value="pagar" onclick="cancelar();" disabled/></td>
+		</tr>
+		</table>   
+			</form>
+	</br>
+	</br>
+	</br>
+	</br>
+	</br>
+	</br>
+	</br>
+	</br>
+    </CENTER>
+          <script>
+          	var socket = io('http://localhost:3000');
+				function buscar() {
+				var x = document.getElementById('tik').value;
+				 if(document.forms['frm'].tik.value != "")
+				  {
+					socket.emit('buscar1',x);
+				  }		
+				}			
+
+				function cancelar() {
+				var x = document.getElementById('tik').value;
+				var x1 = document.getElementById('pago').value;
+				 if(document.forms['frm'].tik.value != "")
+				  {
+			   	socket.emit('pago',x,x1);
+					document.forms['frm'].bt2.disabled = true;
+				  	}
+			 	document.getElementById('tik').value="";
+			 	document.getElementById('kilo').value="";
+				document.getElementById('pago').value="";
+				}				
+				
+				//funcion socket en tiket
+				socket.on('factura', function(fac){
+				alert("Pago realizado, factura numero: " +fac+ ", imprimiendo....")	;			
+				});
+					
+				socket.on('respuesta1', function(respuesta){
+				document.getElementById('kilo').value=respuesta.KILO;
+				document.getElementById('pago').value=respuesta.PRECIO;		
+				document.forms['frm'].bt2.disabled = false;		
+				});
+			 </script>
+  </div>
+</div>
+<div id="footer">  Design by <a href="#"> Jordy Gonzalez 2015</a><br/>
+  This work is licensed under a <a href="#">Buses Velicity</a> </div>
+</body>
+</html>

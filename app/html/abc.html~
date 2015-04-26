@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script src=/socket.io/socket.io.js></script>
+<title>buses Velocity</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+<div id="wrap">
+  <div id="masthead">
+    <h1>Buses Velicity</h1>
+  </div>
+  <div id="container">
+    <div id="menu">
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="/abc.html">ABC Buses</a></li>
+        <li><a href="/index.html">Tiket</a></li>
+        <li><a href="/pago.html">Pago</a></li>
+        <li><a href="/factura.html">Consulta</a></li>
+        <li><a href="/manual.html">Repositorio</a></li>
+      </ul>
+    </div>
+    <div id="content">
+    </div>
+
+   <h1>Eliminar</h1>
+	    <blockquote>Ingrese el ID del bus a eliminar: <input id="in1" autocomplete="off" />
+	    <input id="bt1" type="button" value="Eliminar" onclick="eliminar();" /> </blockquote>
+   <h1>Insertar</h1>
+	    <blockquote>
+		    <table>
+			    <tr><td>Ingrese Matricula:</td><td> <input id="in2" autocomplete="off" /></td></tr>
+			    <tr><td>Ingrese Marca:</td><td><input id="in3" autocomplete="off" /></td></tr>
+			    <tr><td>Ingrese Tipo:</td><td><input id="in4" autocomplete="off" /></td></tr>
+		    </table><br>
+		    <input id="bt2" type="button" value="Guardar" onclick="Guardar();" />
+	    </blockquote>
+    <h1>Actualizar</h1>
+     <blockquote>
+	     <table>
+			  <tr><td>Ingrese ID Bus:</td><td> <input id="in8" autocomplete="off" /></td> </tr>  
+		     <td>Ingrese Matricula:</td><td> <input id="in5" autocomplete="off" /></td>  </tr>
+		     <td>Ingrese Marca:</td><td> <input id="in6" autocomplete="off" /></td>      </tr>
+		     <td>Ingrese Tipo:</td><td> <input id="in7" autocomplete="off" /><td>/ </tr>
+	     </table><br>
+	     <input id="bt3" type="button" value="Modificar" onclick="Modificar();" />
+     </blockquote>
+    </CENTER>
+          <script>
+          	var socket = io('http://localhost:3000');
+				function eliminar() {
+				var x = document.getElementById('in1').value;
+				socket.emit('eliminar',x);
+				alert("Se elimino el bus con ID: "+x);
+				}		
+    
+    			function Guardar() {
+				var x = document.getElementById('in2').value;
+				var x2 = document.getElementById('in3').value;
+				var x3 = document.getElementById('in4').value;
+				socket.emit('guardar',x,x2,x3);
+				alert("Se guardo el bus");
+				document.getElementById('in2').value="";
+				document.getElementById('in3').value="";
+				document.getElementById('in4').value="";
+				}	
+				
+				function Modificar() {
+				var x = document.getElementById('in8').value;
+				var x2 = document.getElementById('in5').value;
+				var x3 = document.getElementById('in6').value;
+				var x4 = document.getElementById('in7').value;
+				socket.emit('mod',x,x2,x3,x4);
+				alert("Se guardo el bus");
+				document.getElementById('in8').value="";
+				document.getElementById('in5').value="";
+				document.getElementById('in6').value="";
+				document.getElementById('in7').value="";
+				}				
+			 </script>
+  </div>
+</div>
+<div id="footer">  Design by <a href="#"> Jordy Gonzalez 2015</a><br/>
+  This work is licensed under a <a href="#">Buses Velicity</a> </div>
+</body>
+</html>

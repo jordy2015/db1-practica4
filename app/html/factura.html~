@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script src=/socket.io/socket.io.js></script>
+<title>buses Velocity</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+<div id="wrap">
+  <div id="masthead">
+    <h1>Buses Velicity</h1>
+  </div>
+  <div id="container">
+    <div id="menu">
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="/abc.html">ABC Buses</a></li>
+        <li><a href="/index.html">Tiket</a></li>
+        <li><a href="/pago.html">Pago</a></li>
+        <li><a href="#">Consulta</a></li>
+        <li><a href="/manual.html">Repositorio</a></li>
+      </ul>
+    </div>
+    <div id="content">
+    </div>
+ 	<h1>Consulta tu factura</h1>
+    <CENTER>
+     <form name="frm" action="#">
+     Ingresa el numero de factura : <input id="fac" autocomplete="off" required/>
+     <input id="bt1" type="submit" value="Buscar" onclick="buscar();" />
+     </form>
+    </CENTER>
+          <script>
+          	var socket = io('http://localhost:3000');
+				function buscar() {
+				var x = document.getElementById('fac').value;
+				  if(document.forms['frm'].fac.value != "")
+				  {
+					socket.emit('buscar2',x);
+				  }
+				
+				}		
+				socket.on('respuesta2', function(respuesta){
+					document.getElementById('content').innerHTML = "Generalidad<br><table border=\"1\" style=\"width:100%\"><tr><td>Cliente: "+respuesta.NOMBRE+"</td><td>Num. bus: "+respuesta.BUS+"</td><td>origen: "+respuesta.ORIGEN+"</td><td>Destino: "+respuesta.DESTINO+"</td></tr></table><br>Detalle de pago";
+				});
+					
+				socket.on('respuesta3', function(respuesta){
+					document.getElementById('content').innerHTML =	document.getElementById('content').innerHTML+"<table border=\"1\" style=\"width:100%\"><tr><td>Salida: "+respuesta.INICIO+"</td><td>Destino: "+respuesta.FINAL+"</td><td>Kil.: "+respuesta.KILOMETROS+"</td><td>Precio: "+respuesta.PRECIO+"</td></tr></table>";
+				});
+				
+				socket.on('respuesta4', function(respuesta){
+					document.getElementById('content').innerHTML =	document.getElementById('content').innerHTML+"<table border=\"1\" style=\"width:100%\"><tr><td>Precio total: "+respuesta.PRECIO+"</td><td>Total k.: "+respuesta.KILO+"</td></tr></table>";
+				});	
+				
+			 </script>
+  </div>
+</div>
+<div id="footer">  Design by <a href="#"> Jordy Gonzalez 2015</a><br/>
+  This work is licensed under a <a href="#">Buses Velicity</a> </div>
+</body>
+</html>
